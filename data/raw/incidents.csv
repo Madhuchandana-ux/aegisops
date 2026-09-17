@@ -1,0 +1,11 @@
+incident_id,short_description,description,category,subcategory,priority,impact,urgency,resolution
+INC0010001,VPN not connecting,User cannot connect to company VPN from home,network,vpn,P2,2,2,Reset VPN configuration and reconnect
+INC0010002,Password reset needed,User forgot corporate password and cannot log in,access,authentication,P3,3,2,Reset password and require new login
+INC0010003,Laptop overheating,Laptop becomes extremely hot and shuts down,hardware,endpoint,P2,2,2,Clean cooling system and inspect hardware
+INC0010004,Outlook not opening,Microsoft Outlook crashes immediately after launch,software,email,P3,3,2,Repair Outlook installation
+INC0010005,VPN authentication failure,VPN rejects valid corporate credentials,network,vpn,P2,2,2,Clear VPN credentials and reauthenticate
+INC0010006,Printer unavailable,Office printer cannot be reached from workstation,network,printing,P3,3,2,Reconnect printer to network
+INC0010007,Account locked,Corporate account is locked after multiple login attempts,access,authentication,P2,2,2,Unlock account and reset credentials
+INC0010008,Blue screen,Laptop repeatedly crashes with a blue screen,hardware,endpoint,P1,1,3,Collect crash logs and escalate to endpoint support
+INC0010009,Email delivery failure,User cannot send emails to external recipients,software,email,P2,2,2,Check mail gateway and account configuration
+INC0010010,Slow computer,Workstation is extremely slow when opening applications,hardware,endpoint,P3,3,2,Check resource usage and remove unnecessary startup applications

@@ -12,3 +12,5 @@ pytest
 pytest-asyncio
 
 langgraph
+
+pandas

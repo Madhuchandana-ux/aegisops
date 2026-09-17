@@ -1,0 +1,9 @@
+document_id,title,content,category,source
+KB001,VPN Connection Troubleshooting,"If a user cannot connect to the corporate VPN, verify network connectivity, confirm the VPN client configuration, clear cached credentials, and authenticate again.",network,internal_it_guide
+KB002,Password Reset Procedure,"For a forgotten corporate password, verify the user's identity, reset the password through the approved identity-management workflow, and require the user to create a new password.",access,internal_it_guide
+KB003,Account Lockout Procedure,"When an account is locked after repeated authentication failures, verify the user identity and unlock the account through the approved identity-management system.",access,internal_it_guide
+KB004,Outlook Troubleshooting,"If Outlook crashes during startup, restart the workstation, disable problematic add-ins, repair the Office installation, and verify the mailbox connection.",software,internal_it_guide
+KB005,Laptop Overheating,"For an overheating laptop, inspect ventilation, remove dust from cooling components, check CPU utilization, and escalate hardware faults when required.",hardware,internal_it_guide
+KB006,Printer Connectivity,"For an unavailable network printer, verify network connectivity, confirm the printer IP address, reinstall the printer connection if necessary, and test printing.",network,internal_it_guide
+KB007,Blue Screen Troubleshooting,"For repeated blue-screen crashes, collect the crash code and system logs, identify recently changed drivers or software, and escalate persistent hardware or driver failures.",hardware,internal_it_guide
+KB008,Email Delivery Troubleshooting,"For external email delivery failures, verify mailbox configuration, inspect mail gateway status, check delivery restrictions, and review relevant mail logs.",software,internal_it_guide
