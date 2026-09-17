@@ -18,6 +18,71 @@ The datasets used by AegisOps support:
 
 External datasets will be documented here before being used for
 model training or evaluation.
+## External Dataset 1
+
+### Name
+
+Classification of IT Support Tickets
+
+### Publisher
+
+Zenodo
+
+### Authors
+
+Leonardo Santiago Benitez Pereira
+
+### Source
+
+https://zenodo.org/records/7648117
+
+### DOI
+
+10.5281/zenodo.7648117
+
+### Dataset Size
+
+2,229 IT support tickets.
+
+### Origin
+
+The tickets were obtained from an IT support company in the
+Florianópolis region of Brazil.
+
+### Classification
+
+The tickets were manually classified into seven categories by
+three IT support professionals.
+
+### Privacy
+
+The dataset documentation states that personally identifiable
+information and sensitive information were removed and that the
+result was manually verified.
+
+### License
+
+CC BY
+
+### Intended Use in AegisOps
+
+The dataset will be used for:
+
+- Incident text classification
+- Category prediction
+- Classification benchmarking
+- Agent routing experiments
+
+### Important Limitation
+
+The dataset is an IT support-ticket corpus rather than a complete
+ServiceNow incident lifecycle dataset. It therefore does not
+provide all fields required for priority prediction, incident
+lifecycle analysis, ServiceNow action execution, or resolution
+verification.
+
+The dataset will therefore not be treated as a complete representation
+of enterprise ServiceNow incidents.
 
 ## Data Provenance
 
