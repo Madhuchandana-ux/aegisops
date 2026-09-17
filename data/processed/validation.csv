@@ -1,0 +1,2 @@
+incident_id,short_description,description,category,subcategory,priority,impact,urgency,resolution
+INC0010006,Printer unavailable,Office printer cannot be reached from workstation,network,printing,P3,3,2,Reconnect printer to network

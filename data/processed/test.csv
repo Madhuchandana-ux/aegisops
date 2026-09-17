@@ -1,0 +1,3 @@
+incident_id,short_description,description,category,subcategory,priority,impact,urgency,resolution
+INC0010009,Email delivery failure,User cannot send emails to external recipients,software,email,P2,2,2,Check mail gateway and account configuration
+INC0010002,Password reset needed,User forgot corporate password and cannot log in,access,authentication,P3,3,2,Reset password and require new login

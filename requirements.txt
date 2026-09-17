@@ -14,3 +14,5 @@ pytest-asyncio
 langgraph
 
 pandas
+
+scikit-learn
