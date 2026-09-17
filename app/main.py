@@ -1,10 +1,12 @@
 from contextlib import asynccontextmanager
-from app.api.routes.incidents import router as incident_router
 
 from fastapi import FastAPI
 
+from app.api.exceptions import global_exception_handler
 from app.api.routes.health import router as health_router
+from app.api.routes.incidents import router as incident_router
 from app.config import get_settings
+from app.middleware.request_id import RequestIDMiddleware
 from app.observability.logging import (
     configure_logging,
     get_logger,
@@ -20,14 +22,11 @@ logger = get_logger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Runs when the FastAPI application starts
-    and stops.
-    """
-
-    logger.info("Starting AegisOps")
-    logger.info("Version: %s", settings.app_version)
-    logger.info("Environment: %s", settings.environment)
+    logger.info(
+        "Starting AegisOps | version=%s | environment=%s",
+        settings.app_version,
+        settings.environment,
+    )
 
     yield
 
@@ -45,11 +44,25 @@ app = FastAPI(
 )
 
 
+app.add_middleware(
+    RequestIDMiddleware,
+)
+
+
+app.add_exception_handler(
+    Exception,
+    global_exception_handler,
+)
+
+
 app.include_router(health_router)
 app.include_router(incident_router)
 
+
 @app.get("/")
 async def root():
+    logger.info("Root endpoint requested")
+
     return {
         "application": settings.app_name,
         "version": settings.app_version,
