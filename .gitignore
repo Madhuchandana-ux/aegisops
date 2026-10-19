@@ -1,4 +1,4 @@
-# =========================
+﻿# =========================
 # Python
 # =========================
 
@@ -76,3 +76,11 @@ temp/
 # =========================
 
 .streamlit/secrets.toml
+aegisops.db
+*.pyc
+
+data/processed/external/*.csv
+README.md.before-placeholder-fix.bak
+
+# External source datasets (keep locally; do not commit)
+data/raw/external/

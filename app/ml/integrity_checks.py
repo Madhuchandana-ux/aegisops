@@ -11,7 +11,6 @@ class IntegrityReport:
     duplicate_ids: int
     empty_descriptions: int
     empty_categories: int
-    train_test_exact_text_overlap: int
     suspicious_email_count: int
     suspicious_phone_count: int
     suspicious_ip_count: int
@@ -117,7 +116,6 @@ def generate_integrity_report(
         duplicate_ids=duplicate_ids,
         empty_descriptions=empty_descriptions,
         empty_categories=empty_categories,
-        train_test_exact_text_overlap=0,
         suspicious_email_count=suspicious_email_count,
         suspicious_phone_count=suspicious_phone_count,
         suspicious_ip_count=suspicious_ip_count,
@@ -128,30 +126,36 @@ def generate_integrity_report(
     )
 
 
+
 def find_exact_text_overlap(
     train_df: pd.DataFrame,
     test_df: pd.DataFrame,
 ) -> set[str]:
     """
-    Find identical descriptions appearing in both
-    training and test datasets.
+    Find descriptions that overlap between training and
+    test datasets after normalizing case and whitespace.
     """
 
-    train_text = set(
+    def normalize_descriptions(
+        series: pd.Series,
+    ) -> set[str]:
+        normalized = (
+            series
+            .fillna("")
+            .astype(str)
+            .str.strip()
+            .str.lower()
+            .str.replace(r"\s+", " ", regex=True)
+        )
+
+        return set(normalized) - {""}
+
+    train_text = normalize_descriptions(
         train_df["description"]
-        .fillna("")
-        .astype(str)
-        .str.strip()
     )
 
-    test_text = set(
+    test_text = normalize_descriptions(
         test_df["description"]
-        .fillna("")
-        .astype(str)
-        .str.strip()
     )
-
-    train_text.discard("")
-    test_text.discard("")
 
     return train_text.intersection(test_text)

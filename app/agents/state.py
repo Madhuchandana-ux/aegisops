@@ -1,72 +1,51 @@
 from typing import Any, TypedDict
 
-
 class AgentState(TypedDict, total=False):
-    """
-    Shared state passed between AegisOps agent nodes.
-    """
-
-    # -------------------------
-    # Incident information
-    # -------------------------
-
     incident_id: str
     incident_text: str
     caller: str
 
-    # -------------------------
-    # Classification
-    # -------------------------
+    username: str
+    user_role: str
+
+    prompt_injection_detected: bool
+    prompt_injection_risk: str
+    prompt_injection_patterns: list[str]
 
     category: str
     subcategory: str
-    priority: str
+    servicenow_sys_id: str
+    action_name: str
+    action_executed: bool
+    username: str
+    user_role: str
 
-    # -------------------------
-    # Retrieval
-    # -------------------------
+    # ML classification information
+    classification_confidence: float
+    classification_model: str
+
+    priority: str
 
     retrieved_documents: list[dict[str, Any]]
     retrieval_scores: list[float]
-
-    # -------------------------
-    # LLM analysis
-    # -------------------------
 
     analysis: str
     proposed_resolution: str
     reasoning_summary: str
 
-    # -------------------------
-    # Confidence and risk
-    # -------------------------
-
     confidence: float
     risk_level: str
     requires_human: bool
 
-    # -------------------------
-    # Action
-    # -------------------------
+    policy_allowed: bool
+    policy_reason: str
 
     selected_action: str
+
     action_result: dict[str, Any]
-
-    # -------------------------
-    # Verification
-    # -------------------------
-
     verification_result: dict[str, Any]
 
-    # -------------------------
-    # Final response
-    # -------------------------
-
     final_response: str
-
-    # -------------------------
-    # Operational metadata
-    # -------------------------
 
     run_id: str
     step_count: int

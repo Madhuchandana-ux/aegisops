@@ -1,105 +1,67 @@
-from pathlib import Path
+﻿from pathlib import Path
 import re
-
 import pandas as pd
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 DATASETS = [
-    (
-        "training",
-        PROJECT_ROOT
-        / "data"
-        / "processed"
-        / "external"
-        / "aegisops_train.csv",
-    ),
-    (
-        "test",
-        PROJECT_ROOT
-        / "data"
-        / "processed"
-        / "external"
-        / "aegisops_test_clean.csv",
-    ),
+    ("training", PROJECT_ROOT / "data/processed/external/aegisops_train.csv"),
+    ("test", PROJECT_ROOT / "data/processed/external/aegisops_test_clean.csv"),
 ]
 
+TEXT_COLUMNS = ["short_description", "description", "resolution"]
 
-PHONE_PATTERN = re.compile(
-    r"(?<!\d)(?:\+?\d[\d\s().-]{7,}\d)(?!\d)"
-)
-
-EMAIL_PATTERN = re.compile(
-    r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
-)
-
-IP_PATTERN = re.compile(
-    r"\b(?:\d{1,3}\.){3}\d{1,3}\b"
-)
-
-
-def inspect_pattern(
-    name: str,
-    df: pd.DataFrame,
-    pattern: re.Pattern,
-):
-    matches = []
-
-    for text in (
-        df["description"]
-        .fillna("")
-        .astype(str)
-    ):
-        if pattern.search(text):
-            matches.append(text)
-
-    print(
-        f"\n{name}: {len(matches)} matching records"
-    )
-
-    for text in matches[:10]:
-        print("-" * 60)
-        print(text[:500])
+PATTERNS = {
+    "possible phone numbers": re.compile(
+        r"(?<!\d)(?:\+?\d[\d\s().-]{7,}\d)(?!\d)"
+    ),
+    "possible email addresses": re.compile(
+        r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
+    ),
+    "possible IPv4 addresses": re.compile(
+        r"\b(?:\d{1,3}\.){3}\d{1,3}\b"
+    ),
+}
 
 
 def main():
     print("=" * 70)
-    print("AegisOps Sensitive Pattern Inspection")
+    print("AegisOps Privacy Pattern Scan")
+    print("Matching text is never printed.")
     print("=" * 70)
 
-    for name, path in DATASETS:
-
+    for dataset_name, path in DATASETS:
         if not path.exists():
-            print(
-                f"\nSkipping {name}: "
-                f"{path} does not exist."
-            )
+            print(f"\n{dataset_name}: file not found; skipped.")
             continue
 
         df = pd.read_csv(path)
+        columns = [c for c in TEXT_COLUMNS if c in df.columns]
 
-        print(
-            f"\nDataset: {name}"
-        )
+        print(f"\n{dataset_name}: {len(df)} records")
 
-        inspect_pattern(
-            "Possible phone numbers",
-            df,
-            PHONE_PATTERN,
-        )
+        if not columns:
+            print("No expected text columns found.")
+            continue
 
-        inspect_pattern(
-            "Possible email addresses",
-            df,
-            EMAIL_PATTERN,
-        )
+        for column in columns:
+            descriptions = df[column].fillna("").astype(str)
+            print(f"\n  Column: {column}")
 
-        inspect_pattern(
-            "Possible IP addresses",
-            df,
-            IP_PATTERN,
-        )
+            for pattern_name, pattern in PATTERNS.items():
+                matching_rows = [
+                    row_number
+                    for row_number, value in enumerate(descriptions, start=2)
+                    if pattern.search(value)
+                ]
+
+                print(f"    {pattern_name}: {len(matching_rows)} records")
+
+                if matching_rows:
+                    print(
+                        f"    CSV row numbers (first 20): "
+                        f"{matching_rows[:20]}"
+                    )
 
 
 if __name__ == "__main__":

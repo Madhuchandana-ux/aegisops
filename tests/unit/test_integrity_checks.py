@@ -83,7 +83,7 @@ def test_exact_text_overlap():
         test_df,
     )
 
-    assert "VPN is not working." in overlap
+    assert "vpn is not working." in overlap
 
 
 def test_no_exact_text_overlap():

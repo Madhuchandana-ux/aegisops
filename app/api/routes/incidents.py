@@ -1,12 +1,13 @@
 import logging
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from app.agents.graph import (
     build_initial_state,
     validate_incident,
 )
+from app.api.dependencies import require_action
 
 
 logger = logging.getLogger(__name__)
@@ -65,12 +66,15 @@ class IncidentResponse(BaseModel):
 async def create_incident(
     request: Request,
     incident: IncidentRequest,
+    current_user: dict = Depends(
+        require_action("create_incident")
+    ),
 ):
     """
     Receive and validate a new IT incident.
 
-    Later this endpoint will start the complete
-    Agentic AI workflow.
+    The endpoint requires an authenticated user with
+    the 'create_incident' permission.
     """
 
     request_id = getattr(
@@ -85,16 +89,21 @@ async def create_incident(
     )
 
     logger.info(
-        "Incident received | request_id=%s | incident_id=%s",
+        "Incident received | request_id=%s | "
+        "incident_id=%s | username=%s | role=%s",
         request_id,
         incident_id,
+        current_user["username"],
+        current_user["role"],
     )
 
     state = build_initial_state(
-        incident_id=incident_id,
-        incident_text=incident.description,
-        caller=incident.caller or "",
-    )
+    incident_id=incident_id,
+    incident_text=incident.description,
+    caller=incident.caller or "",
+    username=current_user["username"],
+    user_role=current_user["role"],
+)
 
     state = validate_incident(state)
 
@@ -112,10 +121,13 @@ async def create_incident(
         )
 
     logger.info(
-        "Incident validated | request_id=%s | incident_id=%s",
-        request_id,
-        incident_id,
-    )
+    "Incident received | request_id=%s | "
+    "incident_id=%s | username=%s | role=%s",
+    request_id,
+    incident_id,
+    current_user["username"],
+    current_user["role"],
+)
 
     return IncidentResponse(
         status="received",

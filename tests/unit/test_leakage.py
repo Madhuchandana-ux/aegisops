@@ -31,7 +31,7 @@ def test_detects_exact_overlap():
     )
 
     assert overlap == {
-        "VPN is not working."
+        "vpn is not working."
     }
 
 
@@ -59,3 +59,44 @@ def test_detects_no_overlap():
     )
 
     assert len(overlap) == 0
+
+def test_detects_overlap_with_different_capitalization():
+    train_df = pd.DataFrame(
+        {
+            "description": ["VPN is not working."]
+        }
+    )
+
+    test_df = pd.DataFrame(
+        {
+            "description": ["vpn is not working."]
+        }
+    )
+
+    overlap = find_exact_text_overlap(
+        train_df,
+        test_df,
+    )
+
+    assert overlap == {"vpn is not working."}
+
+
+def test_detects_overlap_with_different_whitespace():
+    train_df = pd.DataFrame(
+        {
+            "description": ["VPN is not working."]
+        }
+    )
+
+    test_df = pd.DataFrame(
+        {
+            "description": ["  VPN   is   not working.  "]
+        }
+    )
+
+    overlap = find_exact_text_overlap(
+        train_df,
+        test_df,
+    )
+
+    assert overlap == {"vpn is not working."}

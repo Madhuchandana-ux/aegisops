@@ -11,7 +11,7 @@ from app.observability.logging import (
     configure_logging,
     get_logger,
 )
-
+from app.api.routes.auth import router as auth_router
 
 settings = get_settings()
 
@@ -58,7 +58,7 @@ app.add_exception_handler(
 app.include_router(health_router)
 app.include_router(incident_router)
 
-
+app.include_router(auth_router)
 @app.get("/")
 async def root():
     logger.info("Root endpoint requested")
